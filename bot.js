@@ -81,7 +81,6 @@ const ROLE_PRIORITY = [
   "SA-Scharführer",
   "SA-Rottenführer",
   "SA-Obersturmmann",
-  "SA-Sturmmann",
 
   "Reichsleiter",
   "Gauleiter",
