@@ -85,7 +85,24 @@ const ROLE_PRIORITY = [
   "Abschnittsleiter",
   "Hauptgemeinschaftsleiter",
   "Obergemeinschaftsleiter",
-  "Gemeinschaftsleiter"
+  "Gemeinschaftsleiter",
+
+  "Rottenführer",
+  "Oberrottenführer",
+  "Kameradschaftsführer",
+  "Oberkameradschaftsführer",
+  "Scharführer",
+  "Gefolgschaftsführer",
+  "Obergefolgschaftsführer",
+  "Hauptgefolgschaftsführer",
+  "Stammführer",
+  "Oberstammführer",
+  "Bannführer",
+  "Oberbannführer",
+  "Gebietsführer",
+  "Obergebietsführer",
+  "Reichsjugendführer",
+  "Hitlerjunge"
 ];
 
 function getExactRoleTag(member) {
