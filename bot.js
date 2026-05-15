@@ -1,20 +1,7 @@
 require("dotenv").config();
 const axios = require("axios");
-const express = require("express");
 const { Client, GatewayIntentBits, Events } = require("discord.js");
 
-// ================= EXPRESS (RENDER FIX) =================
-const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Bot activo");
-});
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log("🌐 HTTP server activo");
-});
-
-// ================= DISCORD BOT =================
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
@@ -126,17 +113,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 
     const roleTag = getExactRoleTag(interaction.member);
+    const discordName = interaction.member.displayName; // nombre visible en el server
 
     await axios.post(`${process.env.API_BASE_URL}/profile`, {
       robloxUserId,
       robloxUsername,
+      discordName,
       roleTag
     });
 
     await interaction.reply(
-      `✅ Vinculado correctamente\n👤 ${robloxUsername}\n🎖️ ${roleTag}`
+      `✅ Vinculado correctamente\n👤 Roblox: ${robloxUsername}\n💬 Discord: ${discordName}\n🎖️ ${roleTag}`
     );
-
   } catch (err) {
     console.error("ERROR BOT:", err);
     if (!interaction.replied) {
