@@ -51,7 +51,7 @@ const ROLE_PRIORITY = [
   "SD-Sturmmann",
   "SD-Mann",
 
-  "SA-Stabschef",
+  "SA-Chef der Stabes",
   "SA-Obergruppenführer",
   "SA-Gruppenführer",
   "SA-Brigadeführer",
@@ -66,8 +66,7 @@ const ROLE_PRIORITY = [
   "SA-Truppführer",
   "SA-Oberscharführer",
   "SA-Scharführer",
-  "SA-Rottenführer",
-  "SA-Obersturmmann",
+  "SA-Mann",
 
   "Reichsleiter",
   "Gauleiter",
