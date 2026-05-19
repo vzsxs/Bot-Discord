@@ -3,7 +3,7 @@ const axios = require("axios");
 const { Client, GatewayIntentBits, Events } = require("discord.js");
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
 });
 
 const ROLE_PRIORITY = [
@@ -123,10 +123,16 @@ const ROLE_PRIORITY = [
 ];
 
 function getExactRoleTag(member) {
+  const userRoles = member.roles.cache.map(r =>
+    r.name.toLowerCase().trim()
+  );
+
   for (const roleName of ROLE_PRIORITY) {
-    const found = member.roles.cache.some(role => role.name === roleName);
-    if (found) return roleName;
+    if (userRoles.includes(roleName.toLowerCase().trim())) {
+      return roleName;
+    }
   }
+
   return "Civil";
 }
 
@@ -139,15 +145,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
     if (interaction.commandName !== "link") return;
 
+    // 🔥 IMPORTANTE: evita Unknown interaction
+    await interaction.deferReply({ ephemeral: false });
+
     const robloxUserId = interaction.options.getString("roblox_userid");
     const robloxUsername = interaction.options.getString("roblox_username");
 
     if (!robloxUserId || !robloxUsername) {
-      return interaction.reply("❌ Faltan datos en /link");
+      return interaction.editReply("❌ Faltan datos en /link");
     }
 
     const roleTag = getExactRoleTag(interaction.member);
-    const discordName = interaction.member.displayName; // nombre visible en el server
+    const discordName = interaction.member.displayName;
 
     await axios.post(`${process.env.API_BASE_URL}/profile`, {
       robloxUserId,
@@ -156,13 +165,24 @@ client.on(Events.InteractionCreate, async (interaction) => {
       roleTag
     });
 
-    await interaction.reply(
-      `✅ Vinculado correctamente\n👤 Roblox: ${robloxUsername}\n💬 Discord: ${discordName}\n🎖️ ${roleTag}`
+    await interaction.editReply(
+      `✅ Vinculado correctamente
+👤 Roblox: ${robloxUsername}
+💬 Discord: ${discordName}
+🎖️ Rol: ${roleTag}`
     );
+
   } catch (err) {
     console.error("ERROR BOT:", err);
-    if (!interaction.replied) {
-      await interaction.reply("❌ Error conectando con la API");
+
+    try {
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply("❌ Error conectando con la API");
+      } else {
+        await interaction.reply("❌ Error conectando con la API");
+      }
+    } catch (e) {
+      console.error("Fallo al responder error:", e);
     }
   }
 });
