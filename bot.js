@@ -7,6 +7,7 @@ const client = new Client({
 });
 
 const ROLE_PRIORITY = [
+  "Fuhrer",
   "Reichsführer-SS",
   "OberstGruppenführer",
   "Obergruppenführer",
