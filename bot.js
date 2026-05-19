@@ -102,6 +102,24 @@ const ROLE_PRIORITY = [
   "Obergebietsführer",
   "Reichsjugendführer",
   "Hitlerjunge"
+
+  "Generalfeldmarschall",
+  "Generalleutnant",
+  "Generaloberst",
+  "Obergefreiter",
+  "Generalmajor",
+  "Oberst",
+  "Oberstleutnant",
+  "Major",
+  "Hauptmann",
+  "Oberleutnant",
+  "Leutnant",
+  "Oberfeldwebel",
+  "Stabsfeldwebel",
+  "Feldwebel",
+  "Unterfeldwebel",
+  "Unteroffizier",
+  "Stabsgefreiter"
 ];
 
 function getExactRoleTag(member) {
