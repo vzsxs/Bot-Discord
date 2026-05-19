@@ -101,7 +101,7 @@ const ROLE_PRIORITY = [
   "Gebietsführer",
   "Obergebietsführer",
   "Reichsjugendführer",
-  "Hitlerjunge"
+  "Hitlerjunge",
 
   "Generalfeldmarschall",
   "Generalleutnant",
