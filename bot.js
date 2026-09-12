@@ -4,6 +4,9 @@ require("./server");
 const axios = require("axios");
 const { Client, GatewayIntentBits, Events } = require("discord.js");
 
+console.log("🟣 Node:", process.version);
+console.log("🟣 Discord.js:", require("discord.js").version);
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
