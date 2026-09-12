@@ -5,7 +5,7 @@ const path = require("node:path");
 const app = express();
 app.use(express.json());
 
-const PORT = 3000;
+const PORT = process.env.PORT || 10000;
 const DB_FILE = path.join(__dirname, "database.json");
 
 let database = {};
@@ -76,6 +76,6 @@ app.get("/profile/:robloxUserId", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 API lista en http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 API lista en puerto ${PORT}`);
 });
