@@ -201,3 +201,7 @@ client.login(process.env.DISCORD_TOKEN)
   .catch((err) => {
     console.error("❌ ERROR DE LOGIN:", err);
   });
+
+setTimeout(() => {
+  console.log("⏳ 30 SEGUNDOS DESPUÉS DEL LOGIN...");
+}, 30000);
