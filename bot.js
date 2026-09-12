@@ -190,6 +190,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
+console.log("🔥 LLEGANDO AL LOGIN");
+console.log("🔑 TOKEN EXISTE:", !!process.env.DISCORD_TOKEN);
+console.log("📏 LONGITUD TOKEN:", process.env.DISCORD_TOKEN?.length);
+
 client.login(process.env.DISCORD_TOKEN)
-    .then(() => console.log("✅ BOT CONECTADO"))
-    .catch(err => console.error("❌ ERROR:", err));
+  .then(() => {
+    console.log("✅ BOT CONECTADO A DISCORD");
+  })
+  .catch((err) => {
+    console.error("❌ ERROR DE LOGIN:", err);
+  });
