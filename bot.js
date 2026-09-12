@@ -1,8 +1,12 @@
 require("dotenv").config();
 const axios = require("axios");
+const { Client, GatewayIntentBits, Events } = require("discord.js");
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers
+  ]
 });
 
 const ROLE_PRIORITY = [
