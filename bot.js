@@ -1,5 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
+
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
 });
