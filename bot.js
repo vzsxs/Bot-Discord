@@ -1,38 +1,10 @@
 require("dotenv").config();
-require("./server");
-
 const axios = require("axios");
 const { Client, GatewayIntentBits, Events } = require("discord.js");
 
-console.log("🟣 Node:", process.version);
-console.log("🟣 Discord.js:", require("discord.js").version);
-
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers
-  ]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
 });
-
-// ===============================
-// DIAGNÓSTICO DE DISCORD
-// ===============================
-
-client.on("debug", (info) => {
-  console.log("🔍 DISCORD DEBUG:", info);
-});
-
-client.on("error", (error) => {
-  console.error("🚨 DISCORD CLIENT ERROR:", error);
-});
-
-client.on("warn", (info) => {
-  console.warn("⚠️ DISCORD WARN:", info);
-});
-
-// ===============================
-// PRIORIDAD DE ROLES
-// ===============================
 
 const ROLE_PRIORITY = [
   "Fuhrer",
@@ -151,10 +123,6 @@ const ROLE_PRIORITY = [
   "Stabsgefreiter"
 ];
 
-// ===============================
-// OBTENER ROL
-// ===============================
-
 function getExactRoleTag(member) {
   const userRoles = member.roles.cache.map(r =>
     r.name.toLowerCase().trim()
@@ -169,57 +137,34 @@ function getExactRoleTag(member) {
   return "Civil";
 }
 
-// ===============================
-// BOT READY
-// ===============================
-
 client.once(Events.ClientReady, () => {
   console.log("🤖 Bot encendido");
-  console.log(`👤 Conectado como: ${client.user.tag}`);
-  console.log(`🌐 Servidores: ${client.guilds.cache.size}`);
 });
-
-// ===============================
-// COMANDO /LINK
-// ===============================
 
 client.on(Events.InteractionCreate, async (interaction) => {
   try {
     if (!interaction.isChatInputCommand()) return;
-
     if (interaction.commandName !== "link") return;
 
-    // Evita Unknown interaction
-    await interaction.deferReply({
-      ephemeral: false
-    });
+    // 🔥 IMPORTANTE: evita Unknown interaction
+    await interaction.deferReply({ ephemeral: false });
 
-    const robloxUserId =
-      interaction.options.getString("roblox_userid");
-
-    const robloxUsername =
-      interaction.options.getString("roblox_username");
+    const robloxUserId = interaction.options.getString("roblox_userid");
+    const robloxUsername = interaction.options.getString("roblox_username");
 
     if (!robloxUserId || !robloxUsername) {
-      return interaction.editReply(
-        "❌ Faltan datos en /link"
-      );
+      return interaction.editReply("❌ Faltan datos en /link");
     }
 
     const roleTag = getExactRoleTag(interaction.member);
+    const discordName = interaction.member.displayName;
 
-    const discordName =
-      interaction.member.displayName;
-
-    await axios.post(
-      `${process.env.API_BASE_URL}/profile`,
-      {
-        robloxUserId,
-        robloxUsername,
-        discordName,
-        roleTag
-      }
-    );
+    await axios.post(`${process.env.API_BASE_URL}/profile`, {
+      robloxUserId,
+      robloxUsername,
+      discordName,
+      roleTag
+    });
 
     await interaction.editReply(
       `✅ Vinculado correctamente
@@ -233,43 +178,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     try {
       if (interaction.deferred || interaction.replied) {
-        await interaction.editReply(
-          "❌ Error conectando con la API"
-        );
+        await interaction.editReply("❌ Error conectando con la API");
       } else {
-        await interaction.reply(
-          "❌ Error conectando con la API"
-        );
+        await interaction.reply("❌ Error conectando con la API");
       }
     } catch (e) {
-      console.error(
-        "Fallo al responder error:",
-        e
-      );
+      console.error("Fallo al responder error:", e);
     }
   }
 });
 
-// ===============================
-// LOGIN
-// ===============================
-
-console.log("🔥 LLEGANDO AL LOGIN");
-
-console.log(
-  "🔑 TOKEN EXISTE:",
-  !!process.env.DISCORD_TOKEN
-);
-
-console.log(
-  "📏 LONGITUD TOKEN:",
-  process.env.DISCORD_TOKEN?.length
-);
-
-client.login(process.env.DISCORD_TOKEN)
-  .then(() => {
-    console.log("✅ BOT CONECTADO A DISCORD");
-  })
-  .catch((err) => {
-    console.error("❌ ERROR DE LOGIN:", err);
-  });
+client.login(process.env.DISCORD_TOKEN);
